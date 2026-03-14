@@ -1,0 +1,26 @@
+{
+  "name": "hash-hub",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/Michaelzy27/Hash-Hub#readme",
+  "bugs": {
+    "url": "https://github.com/Michaelzy27/Hash-Hub/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Michaelzy27/Hash-Hub.git"
+  },
+  "license": "ISC",
+  "author": "Nnaemeka Michael Umeh",
+  "type": "commonjs",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.20.0"
+  }
+}
