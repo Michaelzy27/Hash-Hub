@@ -6,6 +6,8 @@ exports.signup = async (req, res) => {
 } 
 
 exports.login = async (req, res) => {
+    console.log("Running");
+    
     res.send("login route is working");
 }
 
