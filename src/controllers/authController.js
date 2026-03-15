@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const pool = require('./../db');
 
 exports.signup = async (req, res) => {
     res.send("Signup route is working");
