@@ -1,6 +1,7 @@
 const express = require('express');
-const authRoute = require('./routes/authRoute');
 const cors = require('cors');
+const authRoute = require('./routes/authRoute');
+const bountyRoute = require('./routes/bountyRoute');
 
 const app = express();
 
@@ -20,9 +21,10 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'))
         }
     }
-}))
+}));
 
 app.use('/auth', authRoute);
+app.use('/bounty', bountyRoute);
 
 app.all('*path', (req, res, next) => {
     res.status(404).json({
