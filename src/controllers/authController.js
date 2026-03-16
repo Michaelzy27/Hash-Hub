@@ -32,13 +32,14 @@ exports.signup = async (req, res) => {
         })
 
     } catch (error) {
+
         console.log("Error: ", error);
         
-
         res.status(500).json({
             status: 'fail',
             message: 'Internal server error'
         })
+
     }
 
 } 
@@ -52,12 +53,36 @@ exports.login = async (req, res) => {
             return res.status(400).send("Please enter email and password")
         }
 
-        const result = await pool.query(`SELECT password_hash FROM users WHERE email = $1`, [email])
+        const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
-        const hashedPassword = await bcrypt.hash(password, )
+        const user = result.rows[0]
 
+        try {
 
-        res.send("login route is working");
+            if(result.rows.length === 0 || !await bcrypt.compare(password, user.password_hash)){
+                return res.status(401).json({
+                    status: 'fail',
+                    message: 'Incorrect email or password'
+                })
+            };
+
+        } catch (error) {
+            console.log("password check error: ", error);
+            return res.status(500).send("Internal server error")
+        }
+
+        const userId = user.id;
+
+        const token = jwt.sign( { userId }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+
+        res.status(200).json({
+            status: 'success',
+            message: 'Login successful',
+            data: {
+                token
+            }
+        });
+
     } catch (error) {
         res.status(500).json({
             status: 'fail',
