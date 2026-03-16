@@ -1,4 +1,4 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('./../utils/jwt');
 const pool = require('./../db');
 const bcrypt = require('bcryptjs');
 
@@ -19,16 +19,14 @@ exports.signup = async (req, res) => {
 
         const userId = result.rows[0].id;
 
-        const token = jwt.sign( { userId }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+        const token = jwt.generateToken(userId)
 
         console.log("JWT Token: ", token);
 
         res.status(200).json({
             ststus: 'success',
             message: "Signup successful",
-            data: {
-                token
-            }
+            token
         })
 
     } catch (error) {
@@ -73,14 +71,12 @@ exports.login = async (req, res) => {
 
         const userId = user.id;
 
-        const token = jwt.sign( { userId }, process.env.JWT_SECRET_KEY, { expiresIn: '24h' });
+        const token = jwt.generateToken(userId);
 
         res.status(200).json({
             status: 'success',
             message: 'Login successful',
-            data: {
-                token
-            }
+            token
         });
 
     } catch (error) {

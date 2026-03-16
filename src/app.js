@@ -1,7 +1,9 @@
+require('dotenv').config( { path: `${__dirname}/../.env` } );
 const express = require('express');
 const cors = require('cors');
 const authRoute = require('./routes/authRoute');
 const bountyRoute = require('./routes/bountyRoute');
+
 
 const app = express();
 
