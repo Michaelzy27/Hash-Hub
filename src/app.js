@@ -11,7 +11,7 @@ app.use(express.json());
 
 const allowedOrigins = [
     'http://localhost:3000',
-    'https://thesilverkey.lovable.app',
+    'https://hedera-hustle-hub.lovable.app',
     'http://localhost:8080'
 ]
 
