@@ -45,11 +45,13 @@ exports.signup = async (req, res) => {
 exports.completeProfile = async (req, res) => {
     try {
 
+        const { firstName, lastName, username, location, skills, twitterUsername, referralCode} = req.body;
+        console.log("Req body: ", req.body);
+        
+
         const result = await pool.query(`UPDATE users SET first_name = $1`)
         
-    } catch (
-        
-    ) {
+    } catch (error) {
         
     }
 }
