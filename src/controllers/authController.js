@@ -47,6 +47,8 @@ exports.completeProfile = async (req, res) => {
 
         const { firstName, lastName, username, location, skills, twitterUsername, referralCode } = req.body;
         console.log("Req body: ", req.body);
+        //console.log("image: ", req.file.buffer.toString("base64"));
+        
         
         const userId = req.user.id
 
@@ -57,10 +59,13 @@ exports.completeProfile = async (req, res) => {
         profilePicture = `data:${req.file.mimetype};base64,${base64}`;
         }
 
+        //console.log("profile picture: ", profilePicture);
+        
+
         const result = await pool.query(`UPDATE users SET first_name = $1, last_name = $2, 
-            username = $3, profile_picture = $3, location = $4, twitter_handle = $5, 
-            referral_code = $6, is_complete = $7 WHERE id =  $8 RETURNING *`, 
-        [firstName, lastName, username, profilePicture, location, twitterUsername, referralCode ?? null, skills, true, userId])
+            username = $3, profile_picture = $4, location = $5, twitter_handle = $6, 
+            referral_code = $7, is_complete = $8 WHERE id =  $9 RETURNING *`, 
+        [firstName, lastName, username, profilePicture, location, twitterUsername, referralCode ?? null, true, userId])
 
         if(result.rows === 0) {
             res.status(400).json({
@@ -78,6 +83,11 @@ exports.completeProfile = async (req, res) => {
         })
         
     } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).json({
+            status: 'fail',
+            message: "An error occurred"
+        })
         
     }
 }
