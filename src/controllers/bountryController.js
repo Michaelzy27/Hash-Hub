@@ -15,6 +15,43 @@ exports.getBounties = async (req, res) => {
 
         const bounties = result.rows;
 
+        const Bounties = bounties.map( b => ({
+            id: b.id,
+            title: b.title,
+            project: b.project_name,
+            projectLogo: b.project_logo,
+            category: b.category,
+            reward: b.reward,
+            currency: b.currency,
+            status: b.status,
+            dueDate: b.due_date,
+            submissions: 0,
+            difficulty: b.skill_level,
+            description: b.description,
+            requirements: [],
+            verified: true,
+        }))
+
+        console.log("Bounties: ", Bounties);
+        
+
+        // const Bounty = {
+        //     id: string,
+        //     title: string,
+        //     project: string,
+        //     projectLogo: string,
+        //     category: "Development" | "Design" | "Content" | "Community" | "Other",
+        //     reward: number,
+        //     currency: string,
+        //     status: "open" | "in-review" | "completed" | "expired",
+        //     dueDate: string,
+        //     submissions: number,
+        //     difficulty: "Beginner" | "Intermediate" | "Advanced",
+        //     description: string,
+        //     requirements: string[],
+        //     verified: boolean,
+        // }
+
         res.status(200).json({
             status: 'success',
             message: 'Bonties fecthed successfully',

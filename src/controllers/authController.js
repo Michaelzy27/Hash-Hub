@@ -42,6 +42,18 @@ exports.signup = async (req, res) => {
 
 } 
 
+exports.completeProfile = async (req, res) => {
+    try {
+
+        const result = await pool.query(`UPDATE users SET first_name = $1`)
+        
+    } catch (
+        
+    ) {
+        
+    }
+}
+
 exports.login = async (req, res) => {
     try {
 
