@@ -45,11 +45,37 @@ exports.signup = async (req, res) => {
 exports.completeProfile = async (req, res) => {
     try {
 
-        const { firstName, lastName, username, location, skills, twitterUsername, referralCode} = req.body;
+        const { firstName, lastName, username, location, skills, twitterUsername, referralCode } = req.body;
         console.log("Req body: ", req.body);
         
+        const userId = req.user.id
 
-        const result = await pool.query(`UPDATE users SET first_name = $1`)
+        // Convert image buffer to base64 string for storing in DB
+        let profilePicture = null;
+        if (req.file) {
+        const base64 = req.file.buffer.toString("base64");
+        profilePicture = `data:${req.file.mimetype};base64,${base64}`;
+        }
+
+        const result = await pool.query(`UPDATE users SET first_name = $1, last_name = $2, 
+            username = $3, profile_picture = $3, location = $4, twitter_handle = $5, 
+            referral_code = $6, is_complete = $7 WHERE id =  $8 RETURNING *`, 
+        [firstName, lastName, username, profilePicture, location, twitterUsername, referralCode ?? null, skills, true, userId])
+
+        if(result.rows === 0) {
+            res.status(400).json({
+                status: 'fail',
+                message: 'User not found'
+            });
+        }
+
+        res.status(200).json({
+            status: 'success',
+            message: 'User profile updated successfully',
+            data: {
+                user: result.rows[0]
+            }
+        })
         
     } catch (error) {
         
