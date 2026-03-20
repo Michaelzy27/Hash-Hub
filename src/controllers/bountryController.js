@@ -141,7 +141,7 @@ exports.addBounty = async (req, res) => {
 exports.submitBounty = async (req, res) => {
     try {
 
-        const { bountyId, submission, tweetLink, other } = req.body
+        const { bountyId, submissionLink, tweeterLink, otherLinks } = req.body
         
         const result = await pool.query(`INSERT INTO submissions (bounty_id, submission_link, 
             tweet_link, other) VALUES ($1, $2, $3, $4) RETURNING *`, 

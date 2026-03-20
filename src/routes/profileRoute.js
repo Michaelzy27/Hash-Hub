@@ -6,3 +6,5 @@ const router = express.Router()
 
 router.route('/')
     .put(authenticate, profileController.updateProfile)
+
+module.exports = router
