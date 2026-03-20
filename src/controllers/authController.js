@@ -82,11 +82,26 @@ exports.completeProfile = async (req, res) => {
             });
         }
 
+        const user = result.rows[0]
+
+        const User = {
+            id: user.id,
+            email: user.email,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            username: user.username,
+            location: user.location,
+            skills: [],
+            twitterUsername: user.twitter_handle,
+            avatarUrl: user.profile_picture,
+            walletAddress: user.wallet_address
+        }
+
         res.status(200).json({
             status: 'success',
             message: 'User profile updated successfully',
             data: {
-                user: result.rows[0]
+                user: User
             }
         })
         
@@ -149,8 +164,8 @@ exports.login = async (req, res) => {
         res.status(200).json({
             status: 'success',
             message: 'Login successful',
+            token,
             data: {
-                token,
                 user: User
             }
         });
