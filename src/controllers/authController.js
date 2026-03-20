@@ -1,6 +1,7 @@
 const jwt = require('./../utils/jwt');
 const pool = require('./../db');
 const bcrypt = require('bcryptjs');
+const walletService = require('./../services/createWalletService')
 
 exports.signup = async (req, res) => {
 
@@ -60,12 +61,19 @@ exports.completeProfile = async (req, res) => {
         }
 
         //console.log("profile picture: ", profilePicture);
+
+        //generate wallet address for user
+        const walletResult = await walletService.createHederaWallet();
+        const { accountId, evmAddress, privateKey, publicKey }= walletResult
+        console.log("haha: ", accountId, evmAddress, privateKey, publicKey);
+        
         
 
         const result = await pool.query(`UPDATE users SET first_name = $1, last_name = $2, 
-            username = $3, profile_picture = $4, location = $5, twitter_handle = $6, 
-            referral_code = $7, is_complete = $8 WHERE id =  $9 RETURNING *`, 
-        [firstName, lastName, username, profilePicture, location, twitterUsername, referralCode ?? null, true, userId])
+            username = $3, profile_picture = $4, wallet_address = $5, private_key = $6, 
+            hedera_account_id = $7, location = $8, twitter_handle = $9, 
+            referral_code = $10, is_complete = $11 WHERE id =  $12 RETURNING *`, 
+        [firstName, lastName, username, profilePicture, evmAddress, privateKey, accountId, location, twitterUsername, referralCode ?? null, true, userId])
 
         if(result.rows === 0) {
             res.status(400).json({
@@ -139,4 +147,18 @@ exports.login = async (req, res) => {
 
 exports.forgotPassword = async (req, res) => {
     res.send("Forgot password route is working");
+}
+
+exports.generateWallet = async (req, res) => {
+    try {
+        const result = await walletService.createHederaWallet()
+        const { accountId, evmAddress, privateKey, publicKey } = result
+        console.log("Wallet deets: ", accountId, evmAddress, privateKey, publicKey);
+        res.send('success')
+        
+    } catch (error) {
+        console.log("error: ", error);
+        res.send('error')
+        
+    }
 }

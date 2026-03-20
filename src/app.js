@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const authRoute = require('./routes/authRoute');
 const bountyRoute = require('./routes/bountyRoute');
-
+const profileRoute = require('./routes/profileRoute')
 
 const app = express();
 

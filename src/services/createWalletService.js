@@ -15,8 +15,11 @@ function getClient() {
         "Missing HEDERA_OPERATOR_ID or HEDERA_OPERATOR_KEY in environment variables"
         );
     }
+
+    // Explicitly parse as ECDSA since your portal account is ECDSA type
+    const parsedKey = PrivateKey.fromStringECDSA(operatorKey);
     
-    return Client.forTestnet().setOperator(operatorId, operatorKey);
+    return Client.forTestnet().setOperator(operatorId, parsedKey);
 }
 
 exports.createHederaWallet = async(initialBalance = 1) => {

@@ -9,5 +9,6 @@ router.post('/signup', authController.signup);
 router.post('/complete-profile', authenticate, upload.single("avatar"), authController.completeProfile)
 router.post('/login', authController.login);
 router.post('/forgot-password', authController.forgotPassword);
+router.post('/generate', authController.generateWallet)
 
 module.exports = router;
