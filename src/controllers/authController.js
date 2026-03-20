@@ -48,15 +48,15 @@ exports.completeProfile = async (req, res) => {
 
         const { firstName, lastName, username, location, skills, twitterUsername, referralCode } = req.body;
         console.log("Req body: ", req.body);
-        //console.log("image: ", req.file.buffer.toString("base64"));
+        //console.log("image: ", req.file.buffer.to("base64"));
         
         
         const userId = req.user.id
 
-        // Convert image buffer to base64 string for storing in DB
+        // Convert image buffer to base64  for storing in DB
         let profilePicture = null;
         if (req.file) {
-        const base64 = req.file.buffer.toString("base64");
+        const base64 = req.file.buffer.to("base64");
         profilePicture = `data:${req.file.mimetype};base64,${base64}`;
         }
 
@@ -112,6 +112,8 @@ exports.login = async (req, res) => {
         const result = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
 
         const user = result.rows[0]
+        console.log("User: ", user);
+        
 
         try {
 
@@ -131,10 +133,26 @@ exports.login = async (req, res) => {
 
         const token = jwt.generateToken(userId);
 
+        const User = {
+            id: user.id,
+            email: user.email,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            username: user.username,
+            location: user.location,
+            skills: [],
+            twitterUsername: user.twitter_handle,
+            avatarUrl: user.profile_picture,
+            walletAddress: user.wallet_address
+        }
+
         res.status(200).json({
             status: 'success',
             message: 'Login successful',
-            token
+            data: {
+                token,
+                user: User
+            }
         });
 
     } catch (error) {
