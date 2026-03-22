@@ -145,7 +145,7 @@ exports.submitBounty = async (req, res) => {
         
         const result = await pool.query(`INSERT INTO submissions (bounty_id, submission_link, 
             tweet_link, other) VALUES ($1, $2, $3, $4) RETURNING *`, 
-            [bountyId, submission, tweetLink, other])
+            [bountyId, submissionLink, tweeterLink, otherLinks])
 
         if(result.rows.length === 0) {
             return res.status(400).json({
@@ -159,8 +159,12 @@ exports.submitBounty = async (req, res) => {
             message: 'Submission successful'
         })
 
-
     } catch (error) {
+        console.log("Bounty submission error: ", error);
         
+        res.status(500).json({
+            status: 'fail',
+            message: 'Error submitting bounty. Try again later'
+        })
     }
 }

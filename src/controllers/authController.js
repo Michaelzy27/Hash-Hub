@@ -56,7 +56,7 @@ exports.completeProfile = async (req, res) => {
         // Convert image buffer to base64  for storing in DB
         let profilePicture = null;
         if (req.file) {
-        const base64 = req.file.buffer.to("base64");
+        const base64 = req.file.buffer.toString("base64");
         profilePicture = `data:${req.file.mimetype};base64,${base64}`;
         }
 
