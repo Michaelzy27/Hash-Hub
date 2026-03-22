@@ -94,6 +94,7 @@ exports.completeProfile = async (req, res) => {
             skills: [],
             twitterUsername: user.twitter_handle,
             avatarUrl: user.profile_picture,
+            hederaWalletId: user.hedera_account_id,
             walletAddress: user.wallet_address
         }
 
@@ -158,6 +159,7 @@ exports.login = async (req, res) => {
             skills: [],
             twitterUsername: user.twitter_handle,
             avatarUrl: user.profile_picture,
+            hederaWalletId: user.hedera_account_id,
             walletAddress: user.wallet_address
         }
 
