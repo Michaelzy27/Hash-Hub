@@ -5,3 +5,5 @@ const router = express.Router()
 
 router.route('/create')
     .post(sponsorsController.createSponsor)
+
+module.exports = router

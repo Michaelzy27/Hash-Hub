@@ -95,7 +95,8 @@ exports.completeProfile = async (req, res) => {
             twitterUsername: user.twitter_handle,
             avatarUrl: user.profile_picture,
             hederaWalletId: user.hedera_account_id,
-            walletAddress: user.wallet_address
+            walletAddress: user.wallet_address,
+            isProfileComplete: user.is_complete
         }
 
         res.status(200).json({
@@ -160,7 +161,8 @@ exports.login = async (req, res) => {
             twitterUsername: user.twitter_handle,
             avatarUrl: user.profile_picture,
             hederaWalletId: user.hedera_account_id,
-            walletAddress: user.wallet_address
+            walletAddress: user.wallet_address,
+            isProfileComplete: user.is_complete
         }
 
         res.status(200).json({

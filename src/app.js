@@ -4,6 +4,7 @@ const cors = require('cors');
 const authRoute = require('./routes/authRoute');
 const bountyRoute = require('./routes/bountyRoute');
 const profileRoute = require('./routes/profileRoute')
+const sponsorsRoute = require('./routes/sponsorsRoute')
 
 const app = express();
 
