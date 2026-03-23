@@ -29,6 +29,7 @@ app.use(cors({
 app.use('/auth', authRoute);
 app.use('/bounty', bountyRoute);
 app.use('/profile', profileRoute);
+app.use('/sponsors', sponsorsRoute);
 
 app.all('*path', (req, res, next) => {
     res.status(404).json({
