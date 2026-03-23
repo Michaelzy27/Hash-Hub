@@ -12,7 +12,8 @@ app.use(express.json());
 const allowedOrigins = [
     'http://localhost:3000',
     'https://hedera-hustle-hub.lovable.app',
-    'http://localhost:8080'
+    'http://localhost:8080',
+    'https://www.hashhub.tech'
 ]
 
 app.use(cors({
