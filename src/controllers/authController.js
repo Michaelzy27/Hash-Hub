@@ -24,10 +24,19 @@ exports.signup = async (req, res) => {
 
         console.log("JWT Token: ", token);
 
+        const User = {
+            id: userId,
+            email: email,
+            isProfileComplete: false
+        }
+
         res.status(200).json({
             ststus: 'success',
             message: "Signup successful",
-            token
+            token,
+            data: {
+                user: User
+            }
         })
 
     } catch (error) {
