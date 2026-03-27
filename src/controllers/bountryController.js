@@ -88,7 +88,7 @@ exports.getBounties = async (req, res) => {
 
         res.status(200).json({
             status: 'success',
-            message: 'Bonties fecthed successfully',
+            message: 'Bounties fecthed successfully',
             data: {
                 bounties
             }
@@ -110,10 +110,26 @@ exports.addBounty = async (req, res) => {
 
     try {
 
-        const { title, description, projectName, amount, status, category, skillLevel, image, deadline } = req.body;
+        const { title, description, project, reward, currency, status, category, difficulty, requirements, projectLogo, dueDate } = req.body;
         
-        const result = await pool.query(`INSERT INTO bounties (title, description, project_name, amount, status, category, skill_level, image, deadline) 
-            VALUES ($1, $2, $3, $4, $5, $6, $7,$8, $9) RETURNING *`, [title, description, projectName, amount, status, category, skillLevel, image, deadline]);
+        // id: string;
+        // title: string;
+        // project: string;
+        // projectLogo: string;
+        // category: "Development" | "Design" | "Content" | "Community" | "Other";
+        // reward: number;
+        // currency: string;
+        // status: "open" | "in-review" | "completed" | "expired";
+        // dueDate: string;
+        // submissions: number;
+        // difficulty: "Beginner" | "Intermediate" | "Advanced";
+        // description: string;
+        // requirements: string[];
+        // verified: boolean;
+
+
+        const result = await pool.query(`INSERT INTO bounties (title, description, project_name, reward, currency, status, category, skill_level, project_logo, due_date) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7,$8, $9, $10) RETURNING *`, [title, description, project, reward, currency, status, category, difficulty, projectLogo, dueDate]);
 
         const bounty = result.rows[0];
         
