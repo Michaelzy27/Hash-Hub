@@ -41,13 +41,13 @@ exports.getBounties = async (req, res) => {
 
                 }
 
-                return {...bounties, submissions: submissionsCount, requirements: requirements}
+                return {...b, submissions: submissionsCount, requirements: requirements}
 
             })
         )
 
         // flatten since Promise.all returns an array of arrays
-        const  newBounties = resultBounties.flat();  
+        const newBounties = resultBounties.flat();  
 
         const Bounties = newBounties.map( b => ({
             id: b.id,
@@ -90,7 +90,7 @@ exports.getBounties = async (req, res) => {
             status: 'success',
             message: 'Bounties fecthed successfully',
             data: {
-                bounties
+                bounties: Bounties
             }
         });
 
