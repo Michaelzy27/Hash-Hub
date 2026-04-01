@@ -127,11 +127,22 @@ exports.addBounty = async (req, res) => {
         // requirements: string[];
         // verified: boolean;
 
-
+        //insert bounty into table
         const result = await pool.query(`INSERT INTO bounties (title, description, project_name, reward, currency, status, category, skill_level, project_logo, due_date) 
             VALUES ($1, $2, $3, $4, $5, $6, $7,$8, $9, $10) RETURNING *`, [title, description, project, reward, currency, status, category, difficulty, projectLogo, dueDate]);
 
         const bounty = result.rows[0];
+
+        //insert requirements into table
+        await Promise.all(
+            requirements.map(async (r) => {
+                try {
+                    await pool.query(`INSERT INTO requirements (bounty_id, requirement) VALUES ($1, $2) RETURNING *`, [bounty.id, r])
+                } catch (error) {
+                    console.log("Error inserting requirements: ", error);
+                }
+            })
+        )
         
         res.status(200).json({
             status: 'success',
