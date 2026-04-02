@@ -6,15 +6,15 @@ exports.getBounties = async (req, res) => {
         
         const result = await pool.query(`SELECT * FROM bounties`);
 
-    if (result.rows.length === 0) {
-        return res.status(200).json({
-            status: 'success',
-            message: 'No bounties found',
-            data: {
-                bounties: []
-            }
-        })
-    }
+        if (result.rows.length === 0) {
+            return res.status(200).json({
+                status: 'success',
+                message: 'No bounties found',
+                data: {
+                    bounties: []
+                }
+            })
+        }
 
         const bounties = result.rows;
 
@@ -138,6 +138,70 @@ exports.addBounty = async (req, res) => {
         //insert bounty into table
         const result = await pool.query(`INSERT INTO bounties (title, description, project_name, reward, currency, status, category, skill_level, project_logo, due_date) 
             VALUES ($1, $2, $3, $4, $5, $6, $7,$8, $9, $10) RETURNING *`, [title, description, project, reward, currency, status, category, difficulty, projectLogo, dueDate]);
+
+        const bounty = result.rows[0];
+
+        //insert requirements into table
+        await Promise.all(
+            requirements.map(async (r) => {
+                try {
+                    await pool.query(`INSERT INTO requirements (bounty_id, requirement) VALUES ($1, $2) RETURNING *`, [bounty.id, r])
+                } catch (error) {
+                    console.log("Error inserting requirements: ", error);
+                }
+            })
+        )
+        
+        res.status(200).json({
+            status: 'success',
+            message: 'Bounty added successfully',
+            data: {
+                bounty
+            }
+        })
+
+
+    } catch (error) {
+        console.log("Error: ", error);
+        res.status(500).json({
+            status: 'fail',
+            message: error
+        })
+        
+    }
+
+
+}
+
+exports.addBountySponsor = async (req, res) => {
+
+    try {
+
+        const { title, description, reward, currency, category, difficulty, requirements, dueDate } = req.body;
+        const status = "open";
+
+        // id: string;
+        // title: string;
+        // project: string;
+        // projectLogo: string;
+        // category: "Development" | "Design" | "Content" | "Community" | "Other";
+        // reward: number;
+        // currency: string;
+        // status: "open" | "in-review" | "completed" | "expired";
+        // dueDate: string;
+        // submissions: number;
+        // difficulty: "Beginner" | "Intermediate" | "Advanced";
+        // description: string;
+        // requirements: string[];
+        // verified: boolean;
+
+        //fetch project name and logo from sponsors table using user id from req.user
+        const sponsorResult = await pool.query(`SELECT name, logo FROM sponsors WHERE user_id = $1`, [req.user.id])
+        const sponsor = sponsorResult.rows[0];
+
+        //insert bounty into table
+        const result = await pool.query(`INSERT INTO bounties (title, description, project_name, reward, currency, status, category, skill_level, project_logo, due_date) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7,$8, $9, $10) RETURNING *`, [title, description, sponsor.name, reward, currency, status, category, difficulty, sponsor.logo, dueDate]);
 
         const bounty = result.rows[0];
 
