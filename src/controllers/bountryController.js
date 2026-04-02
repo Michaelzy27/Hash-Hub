@@ -6,12 +6,15 @@ exports.getBounties = async (req, res) => {
         
         const result = await pool.query(`SELECT * FROM bounties`);
 
-        if(result.rows.length === 0 || !result) {
-            return res.status(404).json({
-                status: 'fail',
-                message: 'There are no bounties available'
-            })
-        }
+    if (result.rows.length === 0) {
+        return res.status(200).json({
+            status: 'success',
+            message: 'No bounties found',
+            data: {
+                bounties: []
+            }
+        })
+    }
 
         const bounties = result.rows;
 
@@ -29,6 +32,7 @@ exports.getBounties = async (req, res) => {
                     const requirementsObject = reqResult.rows
                     console.log("Requirements:", requirementsObject);
 
+                    //extract requirement strings from object
                     requirements = requirementsObject.map(r => r.requirement)
                     
 
