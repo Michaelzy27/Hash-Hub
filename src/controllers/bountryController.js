@@ -25,8 +25,12 @@ exports.getBounties = async (req, res) => {
                 //try to get the requirements
                 try {
                     
-                    const reqResult = await pool.query(`SELECT * FROM requirements WHERE id = $1`, [b.id])
-                    requirements = reqResult.rows
+                    const reqResult = await pool.query(`SELECT * FROM requirements WHERE bounty_id = $1`, [b.id])
+                    const requirementsObject = reqResult.rows
+                    console.log("Requirements:", requirementsObject);
+
+                    requirements = requirementsObject.map(r => r.requirement)
+                    
 
                 } catch (error) {
                     console.log("Error getting requirements: ", error);
@@ -34,7 +38,7 @@ exports.getBounties = async (req, res) => {
 
                 //try to get submissions count
                 try {
-                    const subResult = await pool.query(`SELECT * FROM submissions WHERE id = $1`, [b.id])
+                    const subResult = await pool.query(`SELECT * FROM submissions WHERE bounty_id = $1`, [b.id])
                     submissionsCount = subResult.rows.length
                 } catch (error) {
                     console.log("Error getting submissions: ", error);
