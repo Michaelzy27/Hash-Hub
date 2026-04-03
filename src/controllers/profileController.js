@@ -20,7 +20,7 @@ exports.getProfile = async (req, res) => {
             walletAddress: user.wallet_address,
             isProfileComplete: user.is_complete,
             isSponsor: user.is_sponsor
-        }    
+        }
 
         res.status(200).json({
             status: 'success',
@@ -30,7 +30,11 @@ exports.getProfile = async (req, res) => {
             }
         })
     } catch (error) {
-        
+        console.log("Error fetching profile: ", error);
+        res.send(500).json({
+            status: 'fail',
+            message: 'Server error'
+        })
     }
 }
 
