@@ -13,6 +13,9 @@ exports.createSponsor = async (req, res) => {
             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`, 
             [req.user.id, companyName, companyUsername, companyUrl, companyTwitter, entityName, companyLogo, industry, companyBio])
 
+        //update users table to set is_sponsor to true for the user
+        await pool.query(`UPDATE users SET is_sponsor = $1 WHERE id = $2`, [true, req.user.id]);
+        
         res.status(200).json({
             status: 'success',
             message: 'Sponsor profile created successfully'

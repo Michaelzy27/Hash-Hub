@@ -171,8 +171,9 @@ exports.login = async (req, res) => {
             avatarUrl: user.profile_picture,
             hederaWalletId: user.hedera_account_id,
             walletAddress: user.wallet_address,
-            isProfileComplete: user.is_complete
-        }
+            isProfileComplete: user.is_complete,
+            isSponsor: user.is_sponsor
+        }        
 
         res.status(200).json({
             status: 'success',
