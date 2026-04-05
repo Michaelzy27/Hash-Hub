@@ -69,3 +69,22 @@ exports.getSponsorData = async (req, res) => {
         })
     }
 }
+
+exports.getSponsorBounties = async (req, res) => {
+    try {
+        //get bounties belonging to sponsor using user id from req.user
+        const result = await pool.query(`SELECT b.* FROM bounties b JOIN sponsors s ON b.project_name = s.name WHERE s.user_id = $1`, [req.user.id])
+        res.status(200).json({
+            status: 'success',
+            message: 'Sponsor bounties retrieved successfully',
+            data: {
+                bounties: result.rows
+            }
+        })
+    } catch (error) {
+        res.status(500).json({
+            status: 'fail',
+            message: 'Server error'
+        })
+    }
+}

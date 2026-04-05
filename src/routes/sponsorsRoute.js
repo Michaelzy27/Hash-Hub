@@ -6,7 +6,10 @@ const upload = require('./../middlewares/upload')
 const router = express.Router()
 
 router.route('/')
-    .get(authenticate, sponsorsController.getSponsorData)
+    .get(authenticate, sponsorsController.getSponsorData);
+
+router.route('/bounties')
+    .get(authenticate, sponsorsController.getSponsorBounties);
 
 router.route('/create')
     .post(authenticate, upload.fields([
