@@ -74,11 +74,31 @@ exports.getSponsorBounties = async (req, res) => {
     try {
         //get bounties belonging to sponsor using user id from req.user
         const result = await pool.query(`SELECT b.* FROM bounties b JOIN sponsors s ON b.project_name = s.name WHERE s.user_id = $1`, [req.user.id])
+        
+        const bounties = result.rows;
+
+        const Bounties = bounties.map( b => ({
+            id: b.id,
+            title: b.title,
+            project: b.project_name,
+            projectLogo: b.project_logo,
+            category: b.category,
+            reward: b.reward,
+            currency: b.currency,
+            status: b.status,
+            dueDate: b.due_date,
+            submissions: b.submissions,
+            difficulty: b.skill_level,
+            description: b.description,
+            requirements: b.requirements,
+            verified: true,
+        }))
+
         res.status(200).json({
             status: 'success',
             message: 'Sponsor bounties retrieved successfully',
             data: {
-                bounties: result.rows
+                bounties: Bounties
             }
         })
     } catch (error) {
