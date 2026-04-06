@@ -77,6 +77,8 @@ exports.getSponsorBounties = async (req, res) => {
         
         const bounties = result.rows;
 
+        const submissionsResult = await pool.query(`SELECT bounty_id, COUNT(*) as submissions FROM submissions GROUP BY bounty_id`)
+
         const Bounties = bounties.map( b => ({
             id: b.id,
             title: b.title,
