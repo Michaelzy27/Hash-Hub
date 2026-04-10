@@ -67,7 +67,7 @@ exports.getBounties = async (req, res) => {
             currency: b.currency,
             status: b.status,
             dueDate: b.due_date,
-            submissions: b.submissions,
+            submissions: parseInt(b.submissions),
             difficulty: b.skill_level,
             description: b.description,
             requirements: b.requirements,

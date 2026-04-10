@@ -77,14 +77,15 @@ exports.getSponsorBounties = async (req, res) => {
         
         const bounties = result.rows;
 
-        const submissionsResult = await Promise.all(
+        //for each bounty, get the number of submissions and add it to the bounty object
+        const resultBounties = await Promise.all(
             bounties.map( async b => {
                 const submissionCount = await pool.query(`SELECT COUNT(*) FROM submissions WHERE bounty_id = $1`, [b.id]);
-                return submissionCount.rows[0].count;
+                return {...b, submissions: submissionCount.rows[0].count};
             })
         )
 
-        const Bounties = bounties.map( b => ({
+        const Bounties = resultBounties.map( b => ({
             id: b.id,
             title: b.title,
             project: b.project_name,
@@ -94,7 +95,7 @@ exports.getSponsorBounties = async (req, res) => {
             currency: b.currency,
             status: b.status,
             dueDate: b.due_date,
-            submissions: b.submissions,
+            submissions: parseInt(b.submissions),
             difficulty: b.skill_level,
             description: b.description,
             requirements: b.requirements,
