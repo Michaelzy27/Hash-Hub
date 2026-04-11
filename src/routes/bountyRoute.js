@@ -1,5 +1,5 @@
 const express = require('express');
-const bountyController = require('./../controllers/bountryController');
+const bountyController = require('./../controllers/bountyController');
 const authenticate = require('./../middlewares/authenticate');
 
 const router = express.Router();
