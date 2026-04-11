@@ -5,7 +5,7 @@ const authenticate = require('./../middlewares/authenticate');
 const router = express.Router();
 
 router.route('/')
-    .get(authenticate, bountyController.getBounties)
+    .get(bountyController.getBounties)
     .post(authenticate, bountyController.addBounty)
 
 router.post('/submit', authenticate, bountyController.submitBounty)
