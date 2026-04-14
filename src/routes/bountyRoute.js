@@ -12,3 +12,4 @@ router.post('/submit', authenticate, bountyController.submitBounty)
 router.post('/add', authenticate, bountyController.addBountySponsor)
 
 module.exports = router;
+//implement
